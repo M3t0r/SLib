@@ -1,14 +1,14 @@
-2011-07-06: element morphing
+##2011-07-06: element morphing
  * added:
    * main.js
      * .morph(elementNode, newTagName)
 
-2011-07-04: onLoad event handler
+## 2011-07-04: onLoad event handler
  * added:
    * main.js
      * .onLoad(function)
 
-2011-06-28: initial changelog
+## 2011-06-28: initial changelog
  * added:
    * main.js
      * .byId()
