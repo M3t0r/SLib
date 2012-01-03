@@ -1,0 +1,211 @@
+<html>
+<head>
+	<title>SLib Docu</title>
+	<script src="slib/main.js" charset="utf-8" type="text/javascript"></script>
+	<script src="slib/animationBackend.js" charset="utf-8" type="text/javascript"></script>
+	<script src="slib/animation/hideshow.js" charset="utf-8" type="text/javascript"></script>
+	<script src="slib/filter.js" charset="utf-8" type="text/javascript"></script>
+	<style type="text/css">
+		body {
+			padding-left:30px;
+			padding-bottom:20px;
+		}
+		p {
+			margin-top:5px;
+			margin-bottom:10px;
+		}
+		p.caption {
+			font-size:13px;
+			margin-top:-20px;
+		}
+		pre {
+			font-family: monospace;
+			font-size:12px;
+			border: 1px solid #aaa;
+			padding-left:15px;
+			background:#f8f8f8;
+		}
+		em {
+			font-size:13px;
+		}
+
+		div.footer {
+			position:fixed;
+			bottom:0px;
+			left:0px;
+			right:0px;
+			background:white;
+			border-top:1px solid #888;
+			padding:3px;
+			font-family:monospace;
+		}
+	</style>
+	<script type="text/javascript">
+		function anchorOfElement(element) {
+			if(element.firstElementChild != null && (element.firstElementChild.tagName == "a" && typeof(element.firstElementChild.name) != "undefined"))
+				return element.firstElementChild.name;
+
+			element.innerHTML = "<a name='"+element.textContent.split(" ")[0]+"'>"+element.innerHTML+"</a>";
+			return element.firstElementChild.name;
+		}
+		function parseEbene(startElement) {
+			var ebene = parseInt(startElement.tagName.substr(1,1));
+			var str = "<ul>";
+
+			var element = startElement.nextSibling;
+			while(element &&
+				 (element.nodeType != 1 ||
+				  element.tagName.substr(0,1).toLowerCase() != 'h' ||
+				  parseInt(element.tagName.substr(1,1)) > ebene)
+				 ) {
+				if(element.nodeType == 1 && element.tagName.substr(0,1).toLowerCase() == "h") {
+					if(parseInt(element.tagName.substr(1,1).toLowerCase()) == ebene+1) {
+						str += "<li><a href='#"+anchorOfElement(element)+"'>"+element.textContent+"</a></li>";
+						str += parseEbene(element);
+					}
+				}
+				element = element.nextSibling;
+			}
+
+			str += "</ul>";
+			if(str == "<ul></ul>")
+				return "";
+			return str;
+		}
+		document.addEventListener("DOMContentLoaded", function(event) {
+			var start = $.byTag("h1")[0];
+			$.byId("index").innerHTML = parseEbene(start);
+		}, false);
+	</script>
+</head>
+<body>
+	<h1>SLib Dokumentation</h1>
+		<p class="caption">Eine Javascript Bibliothek von Simon Br&uuml;ggen</p>
+		<h2>Vorwort</h2>
+			<p>Was soll man sagen? Meiner Meinung nach ist die beste weise zu lernen, es zu tun. Ich hab schon einiges mit Javascript gemacht, aber entweder simpelste Sachen oder mittelgro&szlig;e Projekte mit anderen Bibliotheken. Allerdings wollte ich wissen was <em>hinter</em> diesen Bibliotheken steckt und warum man dieses ganze schnickel schnackel braucht.</p>
+			<p>Mein Ansatz bei SLib war relativ einfach: Ich wollte lange Javascript Befehle verk&uuml;rzen, gleichzeitig aber performance und kompatibilit&auml;t zu standard Javascript Funktionen wahren. Au&szlig;erdem sehen Effekte doch nett aus und das war eigentlich schon immermal mein Ziel, eigene Effekte zu programmieren. Also entwarf ich nach durchlesen mehrer Berichte &uuml;ber <code>.setTimeout()</code> und <code>.setInterval()</code> ein eigenes Animations-R&uuml;ckgrad.</p>
+			<p>Ich denke das in Zukunft der Funktionsumfang von SLib weiter wachsen wird, aber bis jetzt kann man mit SLib den normalen Alltag abk&uuml;rzen ohne auf eine gro&szlig;e Bibliothek zur&uuml;ckgreifen zu m&uuml;ssen.</p>
+		<h2>Inhaltsverzeichniss</h2>
+			<p id="index">Das Inhaltsverzeichniss wird erstellt wenn die Seite fertig geladen wurde. Bitte haben sie etwas Geduld.</p>
+		<h2>Prinzip</h2>
+			<p>SLib besteht aus mehreren Dateien die seperat eingebunden werden. Die wenigsten haben Abh&auml;ngigkeiten zu anderen Dateien als <code>main.js</code>, es gibt aber mehrer Optionale Abh&auml;ngigkeiten, zum Beispiel braucht der Dialog keine Animationen, wenn aber <code>animation/hideshow.js</code> eingebunde ist wird der Dialog animiert.</p>
+			<p>F&uuml;r die kurze schreibweise benutzt SLib die f&uuml;r Bilbliotheken &uuml;bliche Variable <code>$</code>. Wenn SLib aber neben anderen Bibliotheken verwendet werden soll kann man SLib auch durch <code>SLib</code> verwenden und <code>$</code> neu belgen. Wenn <code>$</code> schon benutzt wird wenn <code>main.js</code> eingebunden wird, wird es nicht &uuml;berschrieben</p>
+		<h2>Selekor</h2>
+			<p class="caption"><code>main.js</code></p>
+			<p>SLib bietet abk&uuml;rzungen f&uuml;r die standard Selektoren <code>document.getElementById(id)</code>, <code>document.getElementsByTagName(tag)</code> und <code>document.getElementsByName(name)</code></p>
+			<table border=1>
+				<thead>
+					<tr>
+						<th>Javascript</th>
+						<th>SLib</th>
+						<th>SLib R&uuml;ckgabewert</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>document.getElementById(id)</td>
+						<td>$.byId(id, <i>previous</i>)</id>
+						<td>Element/Array mit Elementen</td>
+					</tr>
+					<tr>
+						<td>document.getElementsByTagName(tag)</td>
+						<td>$.byTag(tag, <i>previous</i>)</id>
+						<td>Array mit Elementen</td>
+					</tr>
+					<tr>
+						<td>document.getElemenstByName(name)</td>
+						<td>$.byName(name, <i>previous</i>)</id>
+						<td>Array mit Elementen</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>Der optionale Parameter <i>previous</i> muss ein Array sein das schon Elemente enth&auml;lt an die die neugefunden angeh&auml;ngt werden.</p>
+		<h2>Filter</h2>
+			<p class="caption">filter.js</p>
+			<p>Um mit Selektoren erzeugte Arrays zu verkleinern oder nur ein spezielles Element herraus zupicken gibt es Filter die ein Array von Elementen &uuml;berp&uuml;fen und nur den passenden Teil zur&uuml;ck geben</p>
+			<h3>Vorgefertigte Filter</h3>
+			<table border="1">
+				<tr>
+					<th>Funktion</th>
+					<th>Beschreibung</th>
+				</tr>
+				<tr>
+					<td>$.filter.byName(haystack, NAME)</td>
+					<td>Filtert <code>haystack</code> nach <code>.name</code> und gibt ein Array zur&uuml;ck das nur Elemente beinhaltet deren Name <code>NAME</code> ist</td>
+				</tr>
+				<tr>
+					<td>$.filter.byTag(haystack, TAG)</td>
+					<td>Filtert <code>haystack</code>nach <code>.tagName</code> und gibt nur zutreffende Elemente zur&uuml;ck</td>
+				<tr>
+					<td>$.filter.byClass(haystack, CLASS)</td>
+					<td>Filtert <code>haystack</code> nach Elementen die in <code>.className</code> den string <code>CLASS</code> beinhalten. <code>CLASS</code> muss nur enthalten sein, nicht gleich.</td>
+				</tr>
+			</table>
+			<h3>Eigene Filter</h3>
+			<p class="caption">filter.js</p>
+			<p>Die vorgefertigten Filter basieren auf einer Funktion die ein Array aufgrund des R&uuml;ckgabewertes einer Funktion sortiert</p>
+			<p>Die Funktion itteriert alle Elemente in dem Array, &uuml;bergibt das aktuelle Element an die Pr&uuml;ffunktion und beh&auml;lt es im Array wenn diese <code>true</code> zur&uuml;ckgibt. Nachfolgendes liefert ein Array mit allen Buttons oder Elemente mit einer Klasse 'buttons' auf der Website.</p>
+			<pre><code>
+/* filteredArray = SLib.filter.filter(haystack, checkFunction) */
+
+var buttons = $.filter.filter($.byTag('input'), function(element) {
+	if(element.type == 'button' || element.className.indexOf('button') != -1)
+		return true;
+	return false;
+});
+			</code></pre>
+			<p>Es gibt auch eine vorgefertigte Funktion die alle Elemente anhand eines eigens definierten Attributs filtert.</p>
+			<pre><code>
+/* filteredArray = $.filter.byAttribute(haystack, ATTRIBUTE, VALUE); */
+
+var passwordfields = $.filter.byAttribute($.byTag('input'), 'type', 'password');
+			</code></pre>
+		<h2>Browser Erkennung</h2>
+			<p class="caption">browser.js</p>
+			<p>SLib hat eine eingebaute Browserweiche. Beim einbinden der <code>browser.js</code> wird eine &uuml;berpr&uuml;fung des UserAgents des Browsers durchgef&uuml;hrt. Je nach Ergebnis wird ein eigenes Objekt erstellt, gegebenenfalls mit Versionen(Major/Minor). Eine &uuml;berpr&uuml;fung des Browsers kann so durch einfache Abfrage des Objektes geschehen (siehe Beispielcode). Nachfolgend eine Tabelle der "unterst&uuml;zten" Browser.</p>
+			<table border="1">
+				<tr>
+					<th>Browser</th>
+					<th>Objekt</th>
+					<th>Versionserkennung(Major/Minor/Bug)</th>
+				</tr>
+				<tr>
+					<td>Firefox</td>
+					<td><code>$.browser.ff</code></td>
+					<td>Ja(Major/Minor/Bug)</td>
+				</tr>
+				<tr>
+					<td>Internet Explorer</td>
+					<td><code>$.browser.ie</code></td>
+					<td>Ja(Major/Minor)</td>
+				<tr>
+				<tr>
+					<td>Safari</td>
+					<td><code>$.browser.safari</code></td>
+					<td>Nein</td>
+				<tr>
+				<tr>
+					<td>Chrome</td>
+					<td><code>$.browser.chrome</code></td>
+					<td>Ja(Major/Minor/Bug)</td>
+				<tr>
+				<tr>
+					<td>Opera</td>
+					<td><code>$.browser.opera</code></td>
+					<td>Ja(Major/Minor), aber nicht genau</td>
+				<tr>
+			</table>
+			<p><em>Anmerkung zu Opera: Opera scheint die Versionsnummer im UserAgent nur bei jedem zweiten oder dritten Release zu &auml;ndern. Villeicht benutzt Opera in diesen drei Releases auch die selbe Render Engine, sicher bin ich mir aber nicht.</em></p>
+			<p><em>Anmerkung zu Safari: Safari schreibt keine typische Versionsnummer in den Useragent, sondern dreistellige fortlaufende Integer Zahlen. Ich pers&ouml;nlich kann diesen Werten keinen Nutzen abringen, aber jemand der sich damit auskennt kann diese in <code>$.browser.safari.string</code> abfragen</em></p>
+			<pre><code>
+if($.browser.ff && $.browser.ff.major >= 3 && $.browser.ff.minor >= 6)
+	alert("Wir k&ouml;nnen die neu eingef&uuml;hrten javascript methoden von FF3.6 benutzen");
+
+if($.browser.ie)
+	alert("Okay, fallback auf rudiment&auml;re javascript Befehle mit unn&uuml;tzen Zusatzfunktionen");
+			</code></pre>
+
+
+	<div class="footer">Letzte &Auml;nderung: 28.6.2011 von Simon</div>
+</body>
+</html>
