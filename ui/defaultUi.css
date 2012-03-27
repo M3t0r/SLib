@@ -1,0 +1,31 @@
+.dialog {
+	-moz-border-radius:15px; /* zum abrunden der Kanten */
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	-moz-box-shadow: 0px 0px 10px #111;	/* für den schatten unten drunter */
+	-webkit-box-shadow: 0px 0px 10px #111;
+	box-shadow: 0px 0px 10px #111;
+	margin:15px;
+	padding:8px;
+	background-color:white;
+	margin-right:auto;	/* in der mitte zentrieren */
+	margin-left:auto;
+	width:275px;
+	position:relative;
+}
+
+.close {
+	background-image:url(close_button.png);
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: -7px;
+	right: -7px;
+	display:none;
+}
+div:hover.dialog .close {
+	display:block;
+}
+div:hover.close {
+	background-position: 0px 30px;
+}
