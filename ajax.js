@@ -10,6 +10,8 @@ SLib.newHTTPRequest = function() {
 SLib.ajaxGet = new function(url, callback) {
     if(typeof(url) != "string" || typeof(callback) != "function") {
         console.error("SLib.ajaxGet(url, callback): url needs to be a string and callback a function");
+        return;
+    }
 
     r = SLib.newHTTPRequest();
     r.onreadystatechange = function() {
@@ -18,4 +20,4 @@ SLib.ajaxGet = new function(url, callback) {
     };
     r.open("GET", url, true);
     r.send();
-}
+};
