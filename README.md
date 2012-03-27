@@ -5,6 +5,7 @@
  * changed:
    * animations/hideshow.js
      * .start() and .quickEnd() now return the job itself allowing `r = $.hideByHeight(e).start()`
+
 ##2011-07-06: element morphing
  * added:
    * main.js
