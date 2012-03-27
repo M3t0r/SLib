@@ -6,3 +6,16 @@ SLib.newHTTPRequest = function() {
 
 	return client;
 };
+
+SLib.ajaxGet(url, callback) {
+    if(typeof(url) != "string" || typeof(callback) != "function") {
+        console.error("SLib.ajaxGet(url, callback): url needs to be a string and callback a function");
+
+    r = SLib.newHTTPRequest();
+    r.onreadystatechange = function() {
+        if(r.readystate == 4)
+            callback(r.responseText);
+    };
+    r.open("GET", url, true);
+    r.send();
+}

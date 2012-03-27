@@ -53,9 +53,11 @@ SLib.hideByHeight = function(element, time, finalize, to, calculation) {
 		this.finalize();
 		this.finalize = function() {};
 		this.done = true;
+		return this;
 	}
 	job.start = function() {
 		SLib.animationBackend.addJob(this);
+		return this;
 	}
 	return job;
 };
@@ -104,9 +106,11 @@ SLib.showByHeight = function(element, time, finalize, to, calculation) {
 		this.finalize();
 		this.finalize = function() {};
 		this.done = true;
+		return this;
 	}
 	job.start = function() {
 		SLib.animationBackend.addJob(this);
+		return this;
 	}
 	return job;
 };
@@ -146,9 +150,11 @@ SLib.hideByOpacity = function(element, time, finalize, to, calculation) {
 		this.finalize();
 		this.finalize = function() {};
 		this.done = true;
+		return this;
 	}
 	job.start = function() {
 		SLib.animationBackend.addJob(this);
+		return this;
 	}
 	return job;
 };
@@ -190,9 +196,11 @@ SLib.showByOpacity = function(element, time, to, finalize, calculation) {
 		this.finalize();
 		this.finalize = function() {};
 		this.done = true;
+		return this;
 	}
 	job.start = function() {
 		SLib.animationBackend.addJob(this);
+		return this;
 	}
 	return job;
 };

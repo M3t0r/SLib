@@ -1,5 +1,5 @@
 var SLib = {
-	version : "20110706",	/* yyyymmdd */
+	version : "20120327",	/* yyyymmdd */
 	byId : function (ID, previous) {
 		if(previous&&previous.push) {
 			previous.push(document.getElementById(ID));

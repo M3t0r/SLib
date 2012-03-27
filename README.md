@@ -1,3 +1,10 @@
+##2012-03-27: ajaxGet
+ * added:
+   * ajax.js
+     * .ajaxGet(url, callback)
+ * changed:
+   * animations/hideshow.js
+     * .start() and .quickEnd() now return the job itself allowing `r = $.hideByHeight(e).start()`
 ##2011-07-06: element morphing
  * added:
    * main.js
@@ -36,7 +43,7 @@
      *                  .basicJob()
      *                  .intervalTime
      *                  .isRunning
-    browser.js:
+   * browser.js:
      * .browser.ie.{major|minor|string}
      *         .ff.{major|minor|bug|string}
      *         .opera.{major|minor|string}
