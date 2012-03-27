@@ -7,7 +7,7 @@ SLib.newHTTPRequest = function() {
 	return client;
 };
 
-SLib.ajaxGet(url, callback) {
+SLib.ajaxGet = new function(url, callback) {
     if(typeof(url) != "string" || typeof(callback) != "function") {
         console.error("SLib.ajaxGet(url, callback): url needs to be a string and callback a function");
 
