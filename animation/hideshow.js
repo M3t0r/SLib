@@ -17,11 +17,14 @@ SLib.hideByHeight = function(element, time, finalize, to, calculation) {
 	job.totalTime = time;
 	job.element = element;
 	job.calculation = calculation;
-	job.from = parseInt(window.getComputedStyle(element, null).height);
-	job.overflowBackup = window.getComputedStyle(element, null).overflow;
+	job.from = SLib.getHeight(element);
+	if(!SLib.browser.ie)
+		job.overflowBackup = window.getComputedStyle(element, null).overflow;
 	job.to = to;
-	job.padTop = parseInt(window.getComputedStyle(element, null).paddingTop);
-	job.padBot = parseInt(window.getComputedStyle(element, null).paddingBottom);
+	if(!SLib.browser.ie) {
+		job.padTop = parseInt(window.getComputedStyle(element, null).paddingTop);
+		job.padBot = parseInt(window.getComputedStyle(element, null).paddingBottom);
+	}
 
 	job.element.style.overflow = "hidden";
 
@@ -30,10 +33,12 @@ SLib.hideByHeight = function(element, time, finalize, to, calculation) {
 		style = this.element.style;
 		if(this.to == 0) {
 			style.display = "none";
-			style.height = this.from;
-			style.overflow = this.overflowBackup;
-			style.paddingTop = this.padTop;
-			style.paddingBottom = this.padBot;
+			style.height = this.from+"px";
+			if(this.overflowBackup) {
+				style.overflow = this.overflowBackup;
+				style.paddingTop = this.padTop+"px";
+				style.paddingBottom = this.padBot+"px";
+			}
 		} else {
 			style.height = this.to;
 		}
@@ -45,9 +50,11 @@ SLib.hideByHeight = function(element, time, finalize, to, calculation) {
 			this.done = true;
 			this.percentage = 1.0;
 		}
-		this.element.style.height = (this.calculation(this.percentage)*-1+1)*(this.from-this.to)+this.to;
-		this.element.style.paddingTop = (this.calculation(this.percentage)*-1+1)*this.padTop;
-		this.element.style.paddingBottom = (this.calculation(this.percentage)*-1+1)*this.padBot;
+		this.element.style.height = (this.calculation(this.percentage)*-1+1)*(this.from-this.to)+this.to+"px";
+		if(this.padTop) {
+			this.element.style.paddingTop = (this.calculation(this.percentage)*-1+1)*this.padTop+"px";
+			this.element.style.paddingBottom = (this.calculation(this.percentage)*-1+1)*this.padBot+"px";
+		}
 	}
 	job.quickEnd = function() {
 		this.finalize();
@@ -65,8 +72,6 @@ SLib.showByHeight = function(element, time, finalize, to, calculation) {
 	/* defaults */
 	if(!time)
 		time = 250;
-	if(!to)
-		to = parseInt(window.getComputedStyle(element, null).height);
 	if(!finalize)
 		finalize = function() {};
 	if(!calculation)
@@ -79,19 +84,25 @@ SLib.showByHeight = function(element, time, finalize, to, calculation) {
 
 	job.totalTime = time;
 	job.element = element;
-	job.overflowBackup = window.getComputedStyle(element, null).overflow;
+	job.element.style.display = "block";
+	job.element.style.overflow = "hidden";
+	if(!to)
+		to = SLib.getHeight(element);
+	job.element.style.height = 0+"px";
+	if(!SLib.browser.ie) {
+		job.overflowBackup = window.getComputedStyle(element, null).overflow;
+	}
 	job.calculation = calculation;
 	job.from = 0;
 	job.to = to;
 
-	job.element.style.height = 0;
-	job.element.style.display = "block";
-	job.element.style.overflow = "hidden";
 
 	job.finalizeCustom = finalize;
 	job.finalize = function () {
 		style = this.element.style;
-		style.overflow = this.overflowBackup;
+		if(this.overflowBackup)
+			style.overflow = this.overflowBackup;
+		style.height = this.to+"px";
 		this.finalizeCustom();
 	}
 	job.think = function() {
@@ -100,7 +111,7 @@ SLib.showByHeight = function(element, time, finalize, to, calculation) {
 			this.done = true;
 			this.percentage = 1.0;
 		}
-		this.element.style.height = (this.calculation(this.percentage))*this.to;
+		this.element.style.height = (this.calculation(this.percentage))*this.to+"px";
 	}
 	job.quickEnd = function() {
 		this.finalize();
@@ -128,7 +139,10 @@ SLib.hideByOpacity = function(element, time, finalize, to, calculation) {
 
 	job.element = element;
 	job.to = to;
-	job.from = parseInt(window.getComputedStyle(element, null).opacity);
+	if(!SLib.browser.ie)
+		job.from = parseInt(window.getComputedStyle(element, null).opacity);
+	else
+		job.from = 1.0;
 	job.totalTime = time;
 	job.calculation = calculation;
 	job.customFinalize = finalize;

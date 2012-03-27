@@ -1,16 +1,16 @@
 <html>
 <head>
 <title>SLib Test Site</title>
-<script src="slib/main.js" charset="utf-8" type="text/javascript"></script>
-<script src="slib/animationBackend.js" charset="utf-8" type="text/javascript"></script>
-<script src="slib/animation/hideshow.js" charset="utf-8" type="text/javascript"></script>
-<script src="slib/animation/forms.js" charset="utf-8" type="text/javascript"></script>
-<script src="slib/filter.js" charset="utf-8" type="text/javascript"></script>
-<script src="slib/browser.js" charset="utf-8" type="text/javascript"></script>
-<script src="slib/ui/basics.js" charset="utf-8" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="slib/ui/defaultUi.css">
-<script src="slib/dialog.js" charset="utf-8" type="text/javascript"></script>
-<script src="slib/ajax.js" charset="utf-8" type="text/javascript"></script>
+<script src="main.js" charset="utf-8" type="text/javascript"></script>
+<script src="animationBackend.js" charset="utf-8" type="text/javascript"></script>
+<script src="animation/hideshow.js" charset="utf-8" type="text/javascript"></script>
+<script src="animation/forms.js" charset="utf-8" type="text/javascript"></script>
+<script src="filter.js" charset="utf-8" type="text/javascript"></script>
+<script src="browser.js" charset="utf-8" type="text/javascript"></script>
+<script src="ui/basics.js" charset="utf-8" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="ui/defaultUi.css">
+<script src="dialog.js" charset="utf-8" type="text/javascript"></script>
+<script src="ajax.js" charset="utf-8" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body id="slib">
@@ -42,10 +42,10 @@ buttons = $.byTag("input");
 $.filter.byName(buttons, "opacity")[0].onclick = function() {
 	if($.byId("testPage2").style.display == "none") {
 		$.showByOpacity($.byId("testPage2"), 750);
-		$.showByHeight($.byId("testPage2"), 750);
+		$.showByHeight($.byId("testPage2"), 750).start();
 	} else {
 		$.hideByOpacity($.byId("testPage2"), 750);
-		$.hideByHeight($.byId("testPage2"), 750);
+		$.hideByHeight($.byId("testPage2"), 750).start();
 	}
 };
 $.filter.byName(buttons, "dialog")[0].onclick = function() {
@@ -53,9 +53,9 @@ $.filter.byName(buttons, "dialog")[0].onclick = function() {
 };
 $.filter.byName(buttons, "toggle")[0].onclick = function() {
 	if($.byId("testPage2").style.display == "none")
-		$.showByHeight($.byId("testPage2"));
+		$.showByHeight($.byId("testPage2")).start();
 	else
-		$.hideByHeight($.byId("testPage2"));
+		$.hideByHeight($.byId("testPage2")).start();
 };
 $.filter.byName(buttons, "fadered")[0].onclick = function() {
 	$.invalidateInput($.byId("testId"), 750);
