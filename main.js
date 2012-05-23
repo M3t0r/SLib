@@ -1,5 +1,5 @@
 var SLib = {
-	version : "20120327",	/* yyyymmdd */
+	version : "20120523",	/* yyyymmdd */
 	byId : function (ID, previous) {
 		if(previous&&previous.push) {
 			previous.push(document.getElementById(ID));
@@ -176,18 +176,14 @@ var SLib = {
 	    e.className = newClasses.join(" ");
 	},
 	getHeight : function(e) {
-		var display = e.style.display;
-		e.style.display = "block";
-		var height = e.clientHeight;
-		e.style.display = display;
-		return height;
+		return parseFloat((window.getComputedStyle)
+		    ? window.getComputedStyle(e).height
+		    : e.currentStyle.height);
 	},
 	getWidth : function(e) {
-		var display = e.style.display;
-		e.style.display = "block";
-		var width = e.clientWidth;
-		e.style.display = display;
-		return width;
+		return parseFloat((window.getComputedStyle)
+		    ? window.getComputedStyle(e).width
+		    : e.currentStyle.width);
 	}
 };
 
