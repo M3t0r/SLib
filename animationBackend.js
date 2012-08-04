@@ -28,8 +28,8 @@ SLib.animationBackend = {
 			for(i = 0; i < this.jobs.length; i++) {
 				var job = this.jobs[i];
 				if(job.done == false) {
-					job.time = this.jobs[i].time + this.intervalTime;
-					job.think();
+					job.time = job.time + this.intervalTime;
+					job.think(job.time/job.totalTime);
 				}
 				/* clean up if done */
 				if(job.done == true) {
@@ -50,9 +50,23 @@ SLib.animationBackend = {
 	basicJob : function() {
 		this.done = false;
 		this.time = 0;
+		this.totalTime = 250; /* default duration */
 		this.initialize = function() {};
-		this.think = function() {};
+		this.think = function(percent) {
+		    if(percent >= 1.0)
+		        this.done = true;
+		};
 		this.finalize = function() {};
+	    this.start = function() {
+		    SLib.animationBackend.addJob(this);
+		    return this;
+	    }
+	    this.quickEnd = function() {
+		    this.finalize();
+		    this.finalize = function() {}; /* it's getting called again next frame */
+		    this.done = true;
+		    return this;
+	    }
 	},
 	colorFade : function(start, end, percentage) {
 		result = new SLib.color();
