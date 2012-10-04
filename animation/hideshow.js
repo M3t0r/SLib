@@ -84,14 +84,14 @@ SLib.showByHeight = function(element, time, finalize, to, calculation) {
 
 	job.totalTime = time;
 	job.element = element;
+	if(!SLib.browser.ie) {
+		job.overflowBackup = window.getComputedStyle(element, null).overflow;
+	}
 	job.element.style.display = "block";
 	job.element.style.overflow = "hidden";
 	if(!to)
 		to = SLib.getHeight(element);
 	job.element.style.height = 0+"px";
-	if(!SLib.browser.ie) {
-		job.overflowBackup = window.getComputedStyle(element, null).overflow;
-	}
 	job.calculation = calculation;
 	job.from = 0;
 	job.to = to;
