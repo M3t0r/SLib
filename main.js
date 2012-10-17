@@ -1,5 +1,5 @@
 var SLib = {
-	version : "20120523",	/* yyyymmdd */
+	version : "20121017",	/* yyyymmdd */
 	byId : function (ID, previous) {
 		if(previous&&previous.push) {
 			previous.push(document.getElementById(ID));
@@ -74,7 +74,7 @@ var SLib = {
         e.parentNode.replaceChild(newTag, e);
     },
 	childsOf : function(object) {
-		return SLib.filter.filter(
+		return SLib.filter.byFn(
 			object.childNodes,
 			function(e){if(e.nodeType == 1)return true; return false;}
 		);
@@ -175,17 +175,40 @@ var SLib = {
 
 	    e.className = newClasses.join(" ");
 	},
+	computedStyle : function(e) { /* shorthand cs(e) */
+	    return (window.getComputedStyle)
+	        ? window.getComputedStyle(e)
+	        : (e.currentStyle)
+	            ? e.currentStyle
+	            : e.style; /* fallback */
+	},
 	getHeight : function(e) {
-		return parseFloat((window.getComputedStyle)
-		    ? window.getComputedStyle(e).height
-		    : e.currentStyle.height);
+		return parseFloat(SLib.computedStyle(e).height);
 	},
 	getWidth : function(e) {
-		return parseFloat((window.getComputedStyle)
-		    ? window.getComputedStyle(e).width
-		    : e.currentStyle.width);
+		return parseFloat(SLib.computedStyle(e).width);
+	},
+    getTop : function(e) {
+        return (e.offsetParent)
+                ? SLib.getTop(e.offsetParent) + e.offsetTop
+                : e.offsetTop;
+    },
+    getLeft : function(e) {
+        return (e.offsetParent)
+                ? SLib.getLeft(e.offsetParent) + e.offsetLeft
+                : e.offsetLeft;
+    },
+	isHidden : function(e) {
+	    return e == null
+	        || e.style.display == "none"
+	        || parseFloat(e.style.height) == 0
+	        || parseFloat(e.style.width) == 0
+	        || e.style.visibility == "hidden";
 	}
 };
+
+/* shorthands */
+SLib.cs = SLib.computedStyle;
 
 /* don't override another library */
 if(typeof($) == "undefined")
