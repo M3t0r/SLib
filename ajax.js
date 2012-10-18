@@ -16,7 +16,7 @@ SLib.ajaxGet = function(url, callback) {
     r = SLib.newHTTPRequest();
     r.onreadystatechange = function() {
         if(r.readyState == 4)
-            callback(r.responseText);
+            callback(r.responseText, r.status);
     };
     r.open("GET", url, true);
     r.send();
