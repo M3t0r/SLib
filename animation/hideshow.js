@@ -84,14 +84,20 @@ SLib.showByHeight = function(element, time, finalize, to, calculation) {
 
 	job.totalTime = time;
 	job.element = element;
-	if(!SLib.browser.ie) {
-		job.overflowBackup = window.getComputedStyle(element, null).overflow;
-	}
 	job.element.style.display = "block";
 	job.element.style.overflow = "hidden";
 	if(!to)
 		to = SLib.getHeight(element);
 	job.element.style.height = 0+"px";
+	if(!SLib.browser.ie) {
+		job.overflowBackup = window.getComputedStyle(element, null).overflow;
+	}
+	if(!SLib.browser.ie) {
+		job.padTop = parseInt(window.getComputedStyle(element, null).paddingTop);
+		job.padBot = parseInt(window.getComputedStyle(element, null).paddingBottom);
+		element.style.paddingTop = "0px";
+		element.style.paddingBottom = "0px";
+	}
 	job.calculation = calculation;
 	job.from = 0;
 	job.to = to;
@@ -100,8 +106,11 @@ SLib.showByHeight = function(element, time, finalize, to, calculation) {
 	job.finalizeCustom = finalize;
 	job.finalize = function () {
 		style = this.element.style;
-		if(this.overflowBackup)
+		if(this.overflowBackup) {
 			style.overflow = this.overflowBackup;
+            style.paddingTop = this.padTop+"px";
+            style.paddingBottom = this.padBot+"px";
+        }
 		style.height = this.to+"px";
 		this.finalizeCustom();
 	}
@@ -112,6 +121,11 @@ SLib.showByHeight = function(element, time, finalize, to, calculation) {
 			this.percentage = 1.0;
 		}
 		this.element.style.height = (this.calculation(this.percentage))*this.to+"px";
+		if(this.padTop) {
+			this.element.style.paddingTop = (this.calculation(this.percentage))*this.padTop+"px";
+			this.element.style.paddingBottom = (this.calculation(this.percentage))*this.padBot+"px";
+		}
+
 	}
 	job.quickEnd = function() {
 		this.finalize();
