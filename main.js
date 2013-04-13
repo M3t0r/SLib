@@ -1,5 +1,5 @@
 var SLib = {
-	version : "20120804",	/* yyyymmdd */
+	version : "20121017",	/* yyyymmdd */
 	byId : function (ID, previous) {
 		if(previous&&previous.push) {
 			previous.push(document.getElementById(ID));
@@ -199,7 +199,8 @@ var SLib = {
                 : e.offsetLeft;
     },
 	isHidden : function(e) {
-	    return e.style.display == "none"
+	    return e == null
+	        || e.style.display == "none"
 	        || parseFloat(e.style.height) == 0
 	        || parseFloat(e.style.width) == 0
 	        || e.style.visibility == "hidden";
