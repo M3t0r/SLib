@@ -38,7 +38,7 @@ SLib.ui = {
 		} else {
 		/* or simply remove */
 			if(SLib.byId("blackScreenBlocker"))
-				SLib.byId("SLibModalDialog").parentNode.removeChild(SLib.byId("SLibModalDialog"));
+				SLib.byId("blackScreenBlocker").parentNode.removeChild(SLib.byId("blackScreenBlocker"));
 			if(element2remove)
 				element2remove.parentNode.removeChild(element2remove);
 		}
